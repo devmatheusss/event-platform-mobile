@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { Lesson } from "../src/components/Lesson";
 import { useGetLessonBySlugQuery, useGetLessonsQuery } from "../src/graphql/generated";
 import { useState } from "react";
+import YoutubePlayer from "react-native-youtube-iframe";
 
 export default function Home() {
   const [lessonSlug, setLessonSlug] = useState<string | null>(null)
@@ -15,14 +16,21 @@ export default function Home() {
     }
   })
 
-  console.log(lesson)
-
   return (
     <SafeAreaView className="flex-1 bg-zinc-900">
-      <View className="w-full bg-black aspect-video" />
+      {lessonSlug && (
+        <View className="w-full bg-black aspect-video">
+          <YoutubePlayer
+            videoId={lesson?.lesson?.videoId}
+            height={270}
+            forceAndroidAutoplay
+            play
+          />
+        </View>
+      )}
 
       <ScrollView>
-        {!lessonSlug || !loading && (
+        {!lessonSlug || !lessonLoading && (
           <>
             <View className="p-4 gap-2">
               <Text className="text-2xl text-gray-100 font-medium">{lesson?.lesson?.title}</Text>
@@ -40,15 +48,18 @@ export default function Home() {
             </View>
 
             <View className="p-4 flex-row justify-between items-center">
-              <View className="flex-row gap-2 items-center">
-                <View className="w-10 h-10 rounded-full border-2 border-blue-500">
-                  <Image source={{
-                    uri: lesson?.lesson?.teacher?.avatarURL
-                  }} className="rounded-full w-full h-full" />
+              <View className="flex-row items-center">
+                <View className="w-12 h-12 mr-3 rounded-full border-2 border-blue-500">
+                  <Image
+                    source={{
+                      uri: lesson?.lesson?.teacher?.avatarURL
+                    }}
+                    className="rounded-full w-full h-full"
+                  />
                 </View>
                 <View className="">
-                  <Text className="font-medium text-lg text-gray-100">{lesson?.lesson?.teacher?.name}</Text>
-                  <Text className="font-medium text-sm text-gray-300 max-w-[250px]" numberOfLines={1}>{lesson?.lesson?.teacher?.bio}</Text>
+                  <Text className="font-medium text-gray-100">{lesson?.lesson?.teacher?.name}</Text>
+                  <Text className="font-medium text-xs text-gray-300 max-w-[250px]" numberOfLines={1}>{lesson?.lesson?.teacher?.bio}</Text>
                 </View>
               </View>
 
@@ -71,14 +82,13 @@ export default function Home() {
                     title={lesson.title}
                     lessonType={lesson.lessonType}
                     availableAt={new Date(lesson.availableAt)}
+                    activeLessonSlug={lessonSlug!}
                     onPress={() => setLessonSlug(lesson.slug!)}
                   />
                 )
               })}
             </View>
           )}
-
-
         </View>
       </ScrollView>
     </SafeAreaView>
