@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import { useColorScheme } from 'react-native';
 import { SplashScreen, Stack } from 'expo-router';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts, Roboto_400Regular, Roboto_500Medium, Roboto_700Bold } from '@expo-google-fonts/roboto';
+
+import { ApolloProvider } from '@apollo/client'
+import { client } from '../src/services/apollo';
 
 export {
   ErrorBoundary,
@@ -35,13 +36,18 @@ export default function RootLayout() {
 }
 
 function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <ApolloProvider client={client}>
       <Stack>
+        <Stack.Screen
+          name="index"
+          options={{
+            headerShown: false
+          }}
+        />
+        <Stack.Screen name='[slug]' />
         <Stack.Screen name="login" />
       </Stack>
-    </ThemeProvider>
+    </ApolloProvider>
   );
 }

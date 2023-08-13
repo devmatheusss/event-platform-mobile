@@ -1,22 +1,12 @@
-import { View, StyleSheet } from 'react-native'
-import { SansText } from '../components/StyledText'
+import { View, Text } from 'react-native'
 import { Link } from 'expo-router'
 
 export default function Login() {
   return (
-    <View style={styles.container}>
+    <View className="flex-1 items-center justify-center bg-zinc-950">
       <Link href="/">
-        <SansText style={styles.title} weight='RobotoBold'>Login</SansText>
+        <Text className="text-white text-3xl">Login</Text>
       </Link>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 32,
-  }
-})

@@ -1,15 +1,12 @@
-import { Link, Stack } from 'expo-router';
-import { StyleSheet } from 'react-native';
-
-import { Text, View } from '../components/Themed';
-import { SansText } from '../components/StyledText'
+import { Stack } from 'expo-router';
+import { View, Text, StyleSheet } from 'react-native';
 
 export default function NotFoundScreen() {
   return (
     <>
       <Stack.Screen options={{ title: 'Oops!' }} />
-      <View style={styles.container}>
-        <SansText style={styles.title}>Essa página não existe!</SansText>
+      <View className="flex-1 items-center justify-center p-5 bg-zinc-950">
+        <Text className="text-xl text-white">Essa página não existe!</Text>
       </View>
     </>
   );
